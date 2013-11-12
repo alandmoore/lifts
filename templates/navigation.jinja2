@@ -1,0 +1,10 @@
+<ul id=navigation>
+  {% for name, link, description in [
+    ("Home", "/", "Upload and send files"),
+    ("Logout", "/logout", "Exit the program")
+    ]
+    %}
+    <li><a href="{{link}}" title="{{description}}">{{name}}</a></li>
+  {% endfor %}
+
+</ul>

@@ -1,0 +1,21 @@
+{% extends "base.jinja2" %}
+
+{% block body %}
+<h1>Please Login to LIFTS</h1>
+  {% if error %}
+    <p class='error'>{{error}}
+  {% endif %}
+
+<form name='login' id='login_form' method='POST'>
+<ul>
+<li><label>Username: </label><input type='text' name='username'
+				    {% if username %}
+				      value={{username}}
+				    {% endif %}
+				    /></li>
+<li><label>Password: </label><input type='password' name='password' /></li>
+</ul>
+<input type='submit' value='Log In' />
+</form>
+
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends "base.jinja2" %}
+
+{% block body %}
+{% include "navigation.jinja2" %}
+<h1>Welcome to LIFTS</h1>
+
+<h2>Sending as <strong>{{user_realname}}</strong> ({{user_email}})</h2>  
+<form name='lifts_form' method='POST' action='{{url_for('file_upload')}}' enctype='multipart/form-data'>
+<ul>
+<li><label>Upload a file</label><input type='file' name='file_to_send' required /></li>
+<li><label>Specify recipients (one per line)</label><textarea name='recipients' required></textarea></li>
+<li><fieldset><legend>Password protection</legend><ul>
+      <li><label for=do_password>Password protect the download location?</label><input type='checkbox' id='do_password' name='do_password' /></li>
+      <li><label for=pw_protect_username>Username:</label><input id='pw_protect_username' name='pw_protect_username' /></li>
+      <li><label for=pw_protect_password>Password: </label><input id='pw_protect_password' name='pw_protect_password' /></li>
+      </ul></fieldset></li>
+<li><label>Additional Comments (optional)</label><textarea name='additional_comments'></textarea></li>
+<li><input type='submit' value='Send file' /></li>
+</ul>
+</form>
+
+{% endblock %}

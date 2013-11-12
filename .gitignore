@@ -1,0 +1,5 @@
+env/*
+env
+*.pyc
+uploads
+uploads/*

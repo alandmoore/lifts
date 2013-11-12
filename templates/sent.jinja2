@@ -1,0 +1,12 @@
+{% extends "base.jinja2" %}
+
+{% block body %}
+{% include "navigation.jinja2" %}
+
+<h1>File sent!</h1>
+
+<p>The following email was sent to your recipients.  You should also receive a copy.</p>
+<pre>
+{{email_text}}
+</pre>
+{% endblock %}
