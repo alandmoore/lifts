@@ -13,22 +13,23 @@ class Config:
     upload_path = 'uploads/'
     uploads_url = 'http://localhost/files/'
     days_to_keep_files = 30
-    
-    
+
+
     ######################
     # LDAP Configuration #
     ######################
-
+    auth_backend = "dummy"
     ldap_config = {
         "host" : None,
         "port" : None,
         "base_dn" : None,
         "bind_dn_username" : None,
         "bind_dn_password" : None,
+        "require_group" : None,
         "ssl" : None
         }
 
-    
+
     #######################
     # Email Configuration #
     #######################
@@ -55,6 +56,6 @@ class Config:
     optional_text_template = """
     {user_realname} has added the following note:
 
-    {note}
-    
+    {additional_comments}
+
     """

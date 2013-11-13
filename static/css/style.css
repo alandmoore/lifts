@@ -1,0 +1,101 @@
+HTML,BODY {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+BODY{
+    box-shadow: inset 0 0 20px #333;
+    min-height: 100%;
+    background-color: #EEE;
+    font-family: Sans-serif;
+}
+
+
+#navigation{
+    margin-top: 0px;
+    background-color: #333;
+    overflow: auto;
+}
+
+#navigation {
+    list-style: none;
+}
+
+#navigation LI {
+    display: block;
+    width: 10em;
+    float: left;
+}
+
+#navigation LI A {
+
+    color: #EEF;
+}
+
+#footer{
+    position: fixed;
+    bottom: 0;
+    text-align: center;
+}
+
+#content {
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: white;
+    margin-top: 4em;
+    border-radius: 2em;
+    padding: 4em;
+}
+
+#content H1 {
+    text-align: center;
+}
+
+#content #login_form {
+    width: 20em;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#content #login_form LABEL {
+    width: 6em;
+    display: block;
+    float: left;
+}
+
+#content FORM UL{
+    list-style: none;
+}
+
+#content FORM LI {
+    overflow: auto;
+    margin-bottom: 1em;
+}
+
+#content FORM LABEL {
+    width: 10em;
+    display: block;
+    float: left;
+}
+
+#content FORM TEXTAREA {
+    width: 30em;
+    height: 6em;
+}
+
+#content #do_password {
+    float: left;
+    display: block;
+    margin-right: 2em;
+}
+
+#content #do_password_label {
+    width: 20em;
+    float: left;
+}
+
+#content FORM FIELDSET {
+    width: 32em;
+    padding: 2em;
+}

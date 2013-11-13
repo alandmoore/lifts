@@ -10,6 +10,9 @@ from flask import Flask, g, render_template, request, url_for, redirect, session
 from werkzeug import secure_filename
 from includes.config import Config
 from includes.authenticator import Authenticator, dummy_auth
+from includes.ad_auth import AD
+from includes.edirectory_auth import EDirectory
+from includes.email_utils import send_email
 import uuid
 import base64
 import os
@@ -22,7 +25,7 @@ app.config['UPLOAD_FOLDER'] = Config().upload_path
 
 @app.before_request
 def before_request():
-    if request.path not in [url_for('login_page'), url_for("static", filename='style.css')] and not session.get("auth"):
+    if request.path not in [url_for('login_page'), url_for("static", filename='css/style.css')] and not session.get("auth"):
         return redirect(url_for("login_page"))
     g.config = Config()
 
@@ -47,16 +50,16 @@ def file_upload():
     password_protection_text = ""
     optional_text = ""
     password_protection = request.form.get("do_password")
-    
+
     if password_protection:
         password_protection_text = Config.password_protected_template.format({
             "pw_protect_username" : request.form.get("pw_protect_username"),
             "pw_protect_password" : request.form.get("pw_protect_password")
         })
-    
+
     if additional_comments:
         optional_text = Config.optional_text_template.format(user_realname= session['user_realname'], additional_comments= additional_comments)
-    
+
     email_data = {
         "user_realname" : session['user_realname'],
         "expiration_date" : (datetime.date.today() + datetime.timedelta(days=Config.days_to_keep_files)).strftime("%A, %B %d %Y"),
@@ -66,7 +69,10 @@ def file_upload():
     }
 
     email_text = Config.email_template.format(**email_data)
-    
+    recipients = request.form.get("recipients").split("\n")
+    subject = "{} shared a file with you".format(session["user_realname"])
+    send_email(to=recipients, cc=session["user_email"], sender=session["user_email"], subject=subject, message= email_text)
+
     return render_template("sent.jinja2", email_text = email_text)
 
 # Login, Logout
@@ -74,9 +80,10 @@ def file_upload():
 def login_page():
     error = None
     username = None
+    authenticators = {"AD": AD, "dummy": dummy_auth, "eDirectory":EDirectory}
     if request.method == 'POST':
         # attempt to authenticate
-        auth = Authenticator(dummy_auth)
+        auth = Authenticator(authenticators[Config.auth_backend], **Config.ldap_config)
         if auth.check(request.form['username'], request.form['password']):
             session['auth'] = True
             session['username'] = request.form['username']
