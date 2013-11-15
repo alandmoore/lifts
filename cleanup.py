@@ -11,26 +11,31 @@ import syslog
 
 syslog.syslog("LIFTS cleanup starting")
 
-files_directory = Config.upload_path
-if files_directory[0] != '/':
-    files_directory = os.path.join(
-        os.path.realpath(os.path.dirname(__file__)),
-        files_directory)
+directories = {"files" : Config.upload_path, "passwords" :Config.htpassword_path}
+
+for key, directory in directories.items():
+    if directory[0] != '/':
+        directories[key] = os.path.join(
+            os.path.realpath(os.path.dirname(__file__)),
+            directory)
 
 max_age = Config.days_to_keep_files
 
 today = datetime.date.today()
 
-for path, dirlist, filelist in os.walk(files_directory):
-    if path == files_directory:
-        continue
-    ctime_ts = os.stat(path).st_ctime
-    ctime = datetime.date.fromtimestamp(ctime_ts)
-    if (today - ctime).days > max_age:
+for key, directory in directories.items():
+    syslog.syslog("Checking {}.".format(key))
+    for path, dirlist, filelist in os.walk(directory):
+        remove_dir = False
         for filename in filelist:
-            syslog("Removing {} from {}".format(filename, path))
-            os.remove(os.path.join(path, filename))
-        syslog.syslog("Removing {}".format(path))
-        os.rmdir(path)
+            ctime_ts = os.stat(os.path.join(path, filename)).st_ctime
+            ctime = datetime.date.fromtimestamp(ctime_ts)
+            if (today - ctime).days > max_age:
+                syslog("Removing {} from {}".format(filename, path))
+                os.remove(os.path.join(path, filename))
+                remove_dir = path != directory
+        if remove_dir:
+            syslog.syslog("Removing {}".format(path))
+            os.rmdir(path)
 
 syslog.syslog("LIFTS cleanup finished")

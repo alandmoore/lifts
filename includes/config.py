@@ -10,9 +10,25 @@ class Config:
     # Server Configuration #
     ########################
 
+    # This is a local path to your download directory
+    # It needs to be writeable by the user running LIFTS
     upload_path = 'uploads/'
+
+    # This is the outside URL that points the the directory you specified above
     uploads_url = 'http://localhost/files/'
+
+    # This is a directory where htpasswords will be kept
+    # It needs to be writeable by the user running LIFTS, but should not
+    # be shared out by any web service
+    htpassword_path = 'passwords/'
     days_to_keep_files = 30
+
+    htaccess_template = """
+AuthType  Basic
+AuthName  "Password Required"
+AuthUserFile  {password_file}
+Require valid-user
+"""
 
 
     ######################

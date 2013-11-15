@@ -43,7 +43,7 @@ Example Setup
    pip install flask
    deactivate
 
-- Create a directory `/srv/www/htdocs/files` and give "lifts" full r/w permissions
+- Create the directories `/srv/www/htdocs/files` and `/srv/www/passwords` and give "lifts" full r/w permissions
 - Add a site to your Apache config like this::
 
     WSGIScriptAlias /lifts /srv/www/lifts/lifts.wsgi
@@ -59,6 +59,7 @@ Example Setup
   - Set the "session_key" to some long, random string
   - Set the upload_path to `/srv/www/htdocs/files`
   - Set the uploads_url to "http://myserver/files", where "myserver" is something that resolves to this webserver.
+  - Set the htpassword_path to `/srv/www/passwords`
   - Set the auth_backend to "AD"
   - Configure the ldap settings for your AD.
 
@@ -66,6 +67,10 @@ Example Setup
 
 - Restart apache and check it out!
 
+Status
+======
+
+LIFTS is currently very pre-alphaish.  Probably quite buggy.
 
 Contributing
 ============

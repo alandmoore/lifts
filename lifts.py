@@ -17,6 +17,9 @@ import uuid
 import base64
 import os
 import datetime
+from crypt import crypt
+import string
+import random
 
 app = Flask(__name__)
 app.debug = True
@@ -43,7 +46,8 @@ def file_upload():
     upload = request.files["file_to_send"]
     directory = base64.urlsafe_b64encode(uuid.uuid4().bytes).strip("=")
     filename = secure_filename(upload.filename)
-    os.mkdir(os.path.join(app.config['UPLOAD_FOLDER'], directory))
+    upload_directory = os.path.join(app.config['UPLOAD_FOLDER'], directory)
+    os.mkdir(upload_directory)
     upload.save(os.path.join(app.config['UPLOAD_FOLDER'], directory, filename))
     file_url = "{}/{}/{}".format(Config.uploads_url, directory, filename)
     additional_comments = request.form.get("additional_comments").strip()
@@ -52,10 +56,19 @@ def file_upload():
     password_protection = request.form.get("do_password")
 
     if password_protection:
-        password_protection_text = Config.password_protected_template.format({
-            "pw_protect_username" : request.form.get("pw_protect_username"),
-            "pw_protect_password" : request.form.get("pw_protect_password")
-        })
+        username = request.form.get("pw_protect_username")
+        password = request.form.get("pw_protect_password")
+        salt = random.choice(string.ascii_letters) + random.choice(string.ascii_letters)
+        encrypted_pass = crypt(password, salt)
+        password_file = os.path.join(Config.htpassword_path, directory + ".htpw")
+        with open(password_file, 'w') as pwfile:
+            pwfile.write("{}:{}".format(username, encrypted_pass))
+
+        access_file = os.path.join(upload_directory, ".htaccess")
+        with open(access_file, 'w') as acfile:
+            acfile.write(Config.htaccess_template.format(password_file=os.path.realpath(password_file)))
+
+        password_protection_text = Config.password_protected_template.format(pw_protect_username = username, pw_protect_password =password)
 
     if additional_comments:
         optional_text = Config.optional_text_template.format(user_realname= session['user_realname'], additional_comments= additional_comments)
