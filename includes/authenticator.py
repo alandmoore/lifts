@@ -73,6 +73,4 @@ class dummy_auth(auth_backend):
         return self.username
 
     def get_auth_user_email(self):
-        return (self.authenticated and '') or None
-
-    
+        return (self.authenticated and '{}@localhost'.format(self.username)) or None
