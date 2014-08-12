@@ -9,12 +9,13 @@ else:
     import ldap
 from .authenticator import auth_backend
 
+
 class EDirectory(auth_backend):
-    def __init__(self, host='localhost', 
-                 port="389", bind_dn="", 
-                 bind_pw="", require_group = None, 
+    def __init__(self, host='localhost',
+                 port="389", bind_dn="",
+                 bind_pw="", require_group=None,
                  ssl=False):
-        """Contruct an eDirectory connection object.  
+        """Contruct an eDirectory connection object.
 
         Assumes plaintext LDAP.
         Args:
@@ -52,19 +53,20 @@ class EDirectory(auth_backend):
                 self.con = False
         except ldap.SERVER_DOWN:
             self.error = "Could not make connection to {}.".format(self.host)
-    def check (self, username, password):
+
+    def check(self, username, password):
         """Authenticate a user
-        
+
         Return true if the username & password authenticate, otherwise,
         return false;
         """
         if self.con:
-            res = self.con.search_s("", ldap.SCOPE_SUBTREE, 
+            res = self.con.search_s("", ldap.SCOPE_SUBTREE,
                                     "uid={}".format(username))
         else:
             return False
-        # For some stupid reason, ldap will bind successfully 
-        # with a valid username and a BLANK PASSWORD, 
+        # For some stupid reason, ldap will bind successfully
+        # with a valid username and a BLANK PASSWORD,
         # so we have to disallow blank passwords.
         if not password:
             self.error = ("Invalid credentials: Login as {} failed"
@@ -92,7 +94,7 @@ class EDirectory(auth_backend):
     def info_on(self, username):
         """Return ldap information on the given username"""
         if self.con:
-            res = self.con.search_s("", ldap.SCOPE_SUBTREE, 
+            res = self.con.search_s("", ldap.SCOPE_SUBTREE,
                                     "uid={}".format(username))
         else:
             return False
@@ -107,7 +109,7 @@ class EDirectory(auth_backend):
         """Get the full name of the authenticated user from LDAP"""
         if self.authenticated_user:
             info = self.info_on(self.authenticated_user)
-            name = "{} {}".format(info.get("givenName", [''])[0], 
+            name = "{} {}".format(info.get("givenName", [''])[0],
                                   info.get("sn", [''])[0])
             return name
         return ""
@@ -122,12 +124,11 @@ class EDirectory(auth_backend):
 
     def in_group(self, group):
         """Check if the authenticated user is in the group
-        
+
         Return true if they are directly in the group.  Indirect
         membership is not determined.
         """
-        group_res = self.con.search_s("", ldap.SCOPE_SUBTREE, 
+        group_res = self.con.search_s("", ldap.SCOPE_SUBTREE,
                                       "cn={}".format(group))
-        return (group_res and self.authenticated_dn 
+        return (group_res and self.authenticated_dn
                 in group_res[0][1].get("member", []))
-

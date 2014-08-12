@@ -9,15 +9,16 @@ else:
     import ldap
 from .authenticator import auth_backend
 
+
 class AD(auth_backend):
-    def __init__(self, host='localhost', port="389", base_dn="",  
-                 bind_dn_username="", bind_dn_password="", 
+    def __init__(self, host='localhost', port="389", base_dn="",
+                 bind_dn_username="", bind_dn_password="",
                  require_group=None, ssl=False):
-        """Contruct the connection.  
+        """Contruct the connection.
 
         Assumes plaintext LDAP.
         Args:
-        
+
         host -- hostname or IP of the LDAP server
         port -- Port to connect to for LDAP auth
         base_dn -- The base DN to start searching for users
@@ -43,7 +44,7 @@ class AD(auth_backend):
             (port and ":{}".format(port)) or ''
         ])
 
-        #attempt to connect and bind to the server
+        # attempt to connect and bind to the server
         try:
             self.con = ldap.initialize(self.ldap_url)
             if ssl:
@@ -57,20 +58,20 @@ class AD(auth_backend):
         except ldap.SERVER_DOWN:
             self.error = "Could not make connection to {}.".format(self.host)
 
-    def check (self, username=None, password=None):
+    def check(self, username=None, password=None):
         """Attempt to authenticate a username/pw pair
 
         Returns true if auth succeeded, else false.
         """
         if self.con:
             res = self.con.search_s(
-                self.base_dn, 
-                ldap.SCOPE_SUBTREE, 
+                self.base_dn,
+                ldap.SCOPE_SUBTREE,
                 "sAMAccountName={}".format(username))
         else:
             return False
-        # For some stupid reason, 
-        # ldap will bind successfully with a valid username and a 
+        # For some stupid reason,
+        # ldap will bind successfully with a valid username and a
         # BLANK PASSWORD, so we have to disallow blank passwords.
         if not password:
             self.error = ("Invalid credentials: Login as {} failed."
@@ -91,13 +92,12 @@ class AD(auth_backend):
                               .format(username))
                 return False
 
-        #If you've gotten to this point, the username/password checks out
+        # If you've gotten to this point, the username/password checks out
         if self.require_group and not (self.in_group(self.require_group)):
             self.error = "Permission denied"
             return False
 
-        return True # All tests passed!
-
+        return True  # All tests passed!
 
     def in_group(self, group):
         """Check if the currently authenticated user is a member of <group>
@@ -120,8 +120,8 @@ class AD(auth_backend):
         """Return ldap information on the given username"""
         if self.con:
             res = self.con.search_s(
-                self.base_dn, 
-                ldap.SCOPE_SUBTREE, 
+                self.base_dn,
+                ldap.SCOPE_SUBTREE,
                 "sAMAccountName={}".format(username))
         else:
             return False

@@ -3,6 +3,7 @@ Defines a generic authenticator object which will take a
 user/password pair and return authentication status and user details.
 """
 
+
 class Authenticator:
 
     def __init__(self, backend, **kwargs):
@@ -18,7 +19,7 @@ class Authenticator:
         return self.backend.get_auth_user_email()
 
 
-class auth_backend:
+class auth_backend(object):
     """
     This is a base class for an auth backend.
     Any auth backend should subclass it and override its functions.
@@ -26,31 +27,34 @@ class auth_backend:
     authenticated = False
 
     def __init__(self, **kwargs):
-        # This function should connect to authentication sources and configure basic settings
+        """Connect to authentication sources and configure basic settings"""
         pass
 
     def check(self, username=None, password=None):
-        # This function should return a boolean value
-        # True if the credentials check out, False if not
-        # it should also set self.authenticated accordingly
+        """Check the username and password against the auth source
 
+        Return a boolean value
+        True if the credentials check out, False if not
+        it should also set self.authenticated accordingly
+        """
         pass
 
     def get_auth_user_fullname(self):
-        # This function will return the full name of the authenticated user
-        # assuming it's available, e.g. from an LDAP or Database table.
-        # It returns None if there's no authenticated user.
-        # If there's no name available, it can return the username
-
+        """Return the full name of the authenticated user
+        assuming it's available, e.g. from an LDAP or Database table.
+        It returns None if there's no authenticated user.
+        If there's no name available, it can return the username
+        """
         pass
 
     def get_auth_user_email(self):
-        # This function will return the default email address of the
-        # authenticated user, assuming it's available from LDAP or something
-        # Returns None if there's no authenticated user.
-        # If there's no email available, it returns an empty string
-
+        """Return the default email address of the
+        authenticated user, assuming it's available from LDAP or something
+        Returns None if there's no authenticated user.
+        If there's no email available, it returns an empty string
+        """
         pass
+
 
 class dummy_auth(auth_backend):
     """
@@ -73,4 +77,5 @@ class dummy_auth(auth_backend):
         return self.username
 
     def get_auth_user_email(self):
-        return (self.authenticated and '{}@localhost'.format(self.username)) or None
+        return (self.authenticated and
+                '{}@localhost'.format(self.username)) or None
