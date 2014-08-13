@@ -13,6 +13,7 @@
     <script src='{{url_for("static", filename="js/lifts.js")}}'></script>
     </head>
 <body>
+  <div id="background">
   {% block body %}
   {% endblock %}
 {% block footer %}
@@ -20,5 +21,6 @@
 LIFTS &copy; 2013 Alan D.Moore
 </div>
 {% endblock %}
+</div>
 </body>
 </html>
