@@ -4,9 +4,16 @@ These are email-related utilites.
 """
 import smtplib
 from email.mime.multipart import MIMEMultipart
-from email.MIMEText import MIMEText
-from email.MIMEBase import MIMEBase
-from email import Encoders
+
+import sys
+if sys.version_info.major > 2:
+    from email.mime.text import MIMEText
+    from email.mime.base import MIMEBase
+    from email import encoders as Encoders
+else:
+    from email.MIMEText import MIMEText
+    from email.MIMEBase import MIMEBase
+    from email import Encoders
 import platform
 
 
@@ -46,7 +53,10 @@ def send_email(**kwargs):
             part = MIMEBase(*mimetype.split("/"))
             part.set_payload(attachment.get("data"))
             Encoders.encode_base64(part)
-            part.add_header("Content-Disposition", "attachment", filename=attachment.get("filename"))
+            part.add_header(
+                "Content-Disposition",
+                "attachment",
+                filename=attachment.get("filename"))
             msg.attach(part)
 
     smtp = smtplib.SMTP('localhost')
