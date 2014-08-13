@@ -65,7 +65,9 @@ def file_upload():
     """
     # Save the file
     upload = request.files["file_to_send"]
-    directory = base64.urlsafe_b64encode(uuid.uuid4().bytes).strip("=")
+    directory = (base64
+                 .urlsafe_b64encode(uuid.uuid4().bytes)
+                 .strip(b"=").decode("UTF-8"))
     filename = secure_filename(upload.filename)
     upload_directory = os.path.join(app.config['UPLOAD_FOLDER'], directory)
     os.mkdir(upload_directory)
