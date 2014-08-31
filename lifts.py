@@ -14,6 +14,7 @@ from includes.authenticator import Authenticator, dummy_auth
 from includes.ad_auth import AD
 from includes.edirectory_auth import EDirectory
 from includes.email_utils import send_email
+from includes.logging import Log
 import uuid
 import base64
 import os
@@ -41,6 +42,7 @@ def before_request():
 
     # Make the config globally available
     g.config = Config()
+    g.log = Log("lifts_log.db")
 
 ##############
 # Main Pages #
@@ -118,6 +120,9 @@ def file_upload():
                cc=session["user_email"],
                sender=session["user_email"],
                subject=subject, message=email_text)
+    # log it
+    g.log.log_post(session["username"], filename,
+                   recipients, email_text, password_protection)
 
     # return results to the user
     return render_template("sent.jinja2", email_text=email_text)

@@ -5,3 +5,4 @@ uploads
 uploads/*
 passwords
 passwords/*
+/lifts_log.db
