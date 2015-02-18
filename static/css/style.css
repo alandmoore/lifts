@@ -20,13 +20,13 @@ BODY {
 }
 
 #navigation{
-    margin-top: 0px;
-    background-color: #333;
-    overflow: auto;
-}
-
-#navigation {
-    list-style: none;
+   margin-top: 0px;
+   background-color: #333;
+   overflow: auto;
+   list-style: none;
+   position: fixed;
+   width: 100%;
+   opacity: .9;
 }
 
 #navigation LI {
