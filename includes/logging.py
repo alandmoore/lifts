@@ -53,7 +53,7 @@ class Log(object):
         query_data = {
             "posted_by": posted_by,
             "filename": filename,
-            "recipients": recipients,
+            "recipients": ', '.join(x.strip() for x in recipients),
             "comments": comments,
             "protected": protected
         }
