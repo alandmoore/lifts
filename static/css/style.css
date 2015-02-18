@@ -5,11 +5,12 @@ HTML,BODY {
 }
 BODY {
    font-family: Sans-serif;
+   font-size: 14pt;
 }
 
 #background {
    box-shadow: inset 0 0 20px #333;
-   background-color: #EEE;
+   background-color: slateblue;
    overflow: auto;
    height: 100%;
    position: fixed;
@@ -40,9 +41,9 @@ BODY {
 }
 
 #footer{
-    position: fixed;
-    bottom: 0;
-    text-align: right;
+   position: fixed;
+   bottom: 0;
+   text-align: right;
    width: 100%;
    background-color: #333;
    color: white;
@@ -50,14 +51,14 @@ BODY {
 }
 
 #content {
-    width: 80%;
-    margin-left: auto;
-    margin-right: auto;
-    background-color: white;
-    margin-top: 4em;
-   margin-bottom: 4em;
-    border-radius: 2em;
-    padding: 4em;
+   width: 80%;
+   margin-left: auto;
+   margin-right: auto;
+   background-color: white;
+   margin-top: 3em;
+   margin-bottom: 3em;
+   border-radius: 2em;
+   padding: 1em 4em;
 }
 
 #content H1 {
@@ -86,14 +87,14 @@ BODY {
 }
 
 #content FORM LABEL {
-    width: 10em;
+    width: 12em;
     display: block;
     float: left;
 }
 
-#content FORM TEXTAREA {
-    width: 30em;
-    height: 6em;
+#lifts_form TEXTAREA {
+    width: 32em;
+    height: 8em;
 }
 
 #content #do_password {
@@ -107,9 +108,17 @@ BODY {
     float: left;
 }
 
-#content FORM FIELDSET {
-    width: 32em;
-    padding: 2em;
+#lifts_form FIELDSET {
+    width: 33em;
+    padding: 1em;
+}
+
+#lifts_form INPUT[type=text]{
+   width: 80%;
+}
+
+#lifts_form {
+   margin: 0 2em;
 }
 
 #content PRE.email_preview{
@@ -119,3 +128,4 @@ BODY {
     margin-right: auto;
     border-radius: 2em;
 }
+
