@@ -26,8 +26,6 @@ app = Flask(__name__, instance_relative_config=True)
 app.config.from_object('includes.config.Config')
 app.config.from_pyfile('config.py', silent=True)
 
-print(app.config)
-
 
 @app.before_request
 def before_request():
@@ -42,6 +40,11 @@ def before_request():
     ):
         return redirect(url_for("login_page"))
 
+    g.std_args = {
+        "app_name": app.config["APP_NAME"],
+        "site_css": app.config["SITE_CSS"]
+    }
+    
     # Make the config globally available
     g.log = (
         app.config["LOGGING"]["log"]
@@ -62,8 +65,7 @@ def index():
         username=session['username'],
         user_realname=session['user_realname'],
         user_email=session['user_email'],
-        app_name=app.config["APP_NAME"],
-        site_css=app.config["SITE_CSS"]
+        **g.std_args
     )
 
 
@@ -92,7 +94,7 @@ def file_upload():
 
     # Prep some information
     additional_comments = request.form.get("additional_comments").strip()
-    password_protection_text = ""
+    pw_protection_text = ""
     optional_text = ""
     password_protection = request.form.get("do_password")
     if additional_comments:
@@ -175,7 +177,12 @@ def login_page():
         else:
             username = request.form['username']
             error = "Login Failed"
-    return render_template("login.jinja2", error=error, username=username)
+    return render_template(
+        "login.jinja2",
+        error=error,
+        username=username,
+        **g.std_args
+        )
 
 
 @app.route("/logout")
