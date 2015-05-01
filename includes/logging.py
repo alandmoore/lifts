@@ -3,13 +3,8 @@ Logging support for LIFTS.
 
 This implements a log to a SQLITE database.
 """
-import sys
 
-if sys.version_info.major < 3:
-    import sqlite 
-else:
-    import sqlite3 as sqlite
-
+import sqlite3 as sqlite
 
 TABLES = {
     "post_log": """CREATE TABLE post_log (
