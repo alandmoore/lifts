@@ -129,3 +129,11 @@ BODY {
     border-radius: 2em;
 }
 
+#content FORM #recpients_list {
+   float: left;
+}
+
+#content FORM #recipients_list LI {
+   float: left;
+   min-width: 12em;
+}

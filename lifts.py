@@ -132,7 +132,10 @@ def file_upload():
         "optional_text": optional_text
     }
     email_text = app.config["EMAIL"]["email_template"].format(**email_data)
-    recipients = request.form.get("recipients").split("\n")
+    recipients = request.form.getlist("recipients")
+    if recipients:
+        recipients = [r for r in recipients if r]
+    print(recipients)
     subject = "{} shared a file with you".format(session["user_realname"])
     send_email(to=recipients,
                cc=session["user_email"],
@@ -149,7 +152,7 @@ def file_upload():
         )
 
     # return results to the user
-    return render_template("sent.jinja2", email_text=email_text)
+    return render_template("sent.jinja2", email_text=email_text, **g.std_args)
 
 
 @app.route("/login", methods=['GET', 'POST'])
