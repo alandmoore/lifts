@@ -2,7 +2,7 @@ import sys
 import os.path
 
 path = os.path.realpath(os.path.dirname(__file__))
-virualenv_path = os.path.join(path, "env")
+virtualenv_path = os.path.join(path, "env")
 
 #activate virtualenv if it exists
 activate_this = os.path.join(virtualenv_path, "/bin/activate_this.py")
