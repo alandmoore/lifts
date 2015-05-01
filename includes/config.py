@@ -20,7 +20,7 @@ class Config:
 
     # This is a local path to your download directory
     # It needs to be writeable by the user running LIFTS
-    UPLOAD_FOLDER = 'uploads/'
+    UPLOAD_FOLDER = '/tmp/uploads/'
 
     # This is the outside URL that points the the directory you specified above
     UPLOADS_URL = 'http://localhost/files/'
