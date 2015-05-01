@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Welcome to LIFTS</title>
+    <title>Welcome to {{app_name}}</title>
     <meta http-equiv="X-UA-Compatible" content="IE=9" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <link rel='stylesheet' type='text/css' href='{{url_for("static", filename="css/style.css")}}' />
+    {% if site_css %}
+      <link rel='stylesheet' type='text/css' href='{{url_for("static", filename="css/" + site_css)}}' />
+    {% endif %}
     <script src='{{url_for("static", filename="js/jquery.js")}}'></script>
     {% block additional_headers %}
     {% endblock %}

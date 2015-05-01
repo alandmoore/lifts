@@ -3,7 +3,7 @@
 {% block body %}
 {% include "navigation.jinja2" %}
 <div id="content">
-<h1>Welcome to LIFTS</h1>
+<h1>Welcome to {{app_name}}</h1>
 
 <h2>Sending as <strong>{{user_realname}}</strong> ({{user_email}})</h2>
 <form name='lifts_form' id='lifts_form' method='POST' action='{{url_for('file_upload')}}' enctype='multipart/form-data'>
