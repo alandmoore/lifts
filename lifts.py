@@ -30,13 +30,19 @@ app.config.from_pyfile('config.py', silent=True)
 @app.before_request
 def before_request():
     """Do checks before requests are handled"""
+
+    unsecured_urls = (
+        url_for('login_page', _external=True),
+        url_for('static', filename='css/style.css', _external=True),
+        url_for('static', filename='css/' + (app.config["SITE_CSS"] or ''), _external=True),
+        url_for('static', filename='js/jquery.js', _external=True),
+        url_for('static', filename='js/lifts.js', _external=True)
+    )
     
     # Forward to the login page if not authenticated
     if (
-        request.url not in
-        (url_for('login_page', _external=True),
-         url_for("static", filename='css/style.css', _external=True))
-            and not session.get("auth")
+        request.url not in unsecured_urls
+        and not session.get("auth")
     ):
         return redirect(url_for("login_page"))
 
