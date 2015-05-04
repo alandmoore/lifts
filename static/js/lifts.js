@@ -21,5 +21,12 @@ $(document).ready(function(){
 	    $("input[name=recipients]:first").attr("required", "required");
 	}
     });
-    
+
+
+    // Disable the "send file" button on submit, and put up a message that we're uploading
+
+    $(document).on("submit", "#lifts_form", function(){
+	$("INPUT[type=submit]").attr("disabled", "disabled").attr("value", "Please Wait...");
+	$("#messages").html("<h3>Your file is uploading.</h3> This could take a while.  Please be patient, and don't leave this page.");
+    });
 });
