@@ -19,6 +19,7 @@
     </ul>
   </li>
   <li>
+    {% if user_specified_credentials %}
     <fieldset>
       <legend>Password protection</legend>
       <ul>
@@ -28,7 +29,7 @@
 	</li>
 	<li>
 	  <label for=pw_protect_username>Username:</label>
-	  <input type='text' id='pw_protect_username' name='pw_protect_username' />
+	  <input type='text' id='pw_protect_username' name='pw_protect_username' value="{{default_username}}"/>
 	</li>
 	<li>
 	  <label for=pw_protect_password>Password: </label>
@@ -36,6 +37,14 @@
 	</li>
       </ul>
     </fieldset>
+  {% else %}
+    <input type='checkbox' id='do_password' name='do_password' />
+    <label for=do_password id='do_password_label'>Password protect the download location?</label>
+    <ul id="autogen_pw_note">
+      <li>Username will be "{{default_username}}".</li>
+      <li>Password will be randomly generated.</li>
+    </ul>
+  {% endif %}    
   </li>
   <li>
     <label>Additional Comments<br />(optional)</label>

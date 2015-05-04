@@ -1,6 +1,7 @@
 <ul id=navigation>
   {% for name, link, description in [
     ("Home", url_for("index"), "Upload and send files"),
+    ("Help", url_for("help"), "Get help using " + app_name),
     ("Logout", url_for("logout"), "Exit the program")
     ]
     %}

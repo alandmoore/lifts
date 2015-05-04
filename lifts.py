@@ -65,6 +65,8 @@ def index():
         username=session['username'],
         user_realname=session['user_realname'],
         user_email=session['user_email'],
+        user_specified_credentials=app.config["USER_SPECIFIED_CREDENTIALS"],
+        default_username=app.config["DEFAULT_USERNAME"],
         **g.std_args
     )
 
@@ -105,8 +107,12 @@ def file_upload():
 
     if password_protection:
         # Generate the Apache HTPasswd file
-        username = request.form.get("pw_protect_username")
-        password = request.form.get("pw_protect_password")
+        if app.config["USER_SPECIFIED_CREDENTIALS"]:
+            username = request.form.get("username")
+            password = request.form.get("password")
+        else:
+            username = app.config.get("DEFAULT_USERNAME", "user")
+            password = base64.b64encode(os.urandom(6))
         salt = (choice(string.ascii_letters) + choice(string.ascii_letters))
         encrypted_pass = crypt(password, salt)
         password_file = os.path.join(app.config["HTPASSWORD_PATH"],
@@ -176,6 +182,11 @@ def login_page():
             session['username'] = request.form['username']
             session['user_realname'] = auth.get_user_name()
             session['user_email'] = auth.get_user_email()
+            g.log.log_login(
+                request.form['username'],
+                request.remote_addr,
+                request.user_agent.string
+            )
             return redirect(url_for("index"))
         else:
             username = request.form['username']
@@ -198,6 +209,20 @@ def logout():
     session['username'] = None
     session['user_realname'] = None
     return redirect(url_for("login_page"))
+
+
+@app.route("/help")
+def help():
+    """Display a help page"""
+    template = app.config["UI"].get("site_help") or "help.jinja2"
+    return render_template(
+        template,
+        techsupport_contact=app.config["UI"].get("techsupport_contact"),
+        auth_directory_name=app.config["UI"].get("auth_directory_name"),
+        days_to_keep_files=app.config["DAYS_TO_KEEP_FILES"],
+        custom_credentials=app.config["USER_SPECIFIED_CREDENTIALS"],
+        **g.std_args
+    )
 
 
 if __name__ == '__main__':

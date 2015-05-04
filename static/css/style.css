@@ -137,3 +137,12 @@ BODY {
    float: left;
    min-width: 12em;
 }
+
+
+#content FORM #autogen_pw_note
+{
+   display: none;
+   clear: both;
+   text-size: .8em;
+   color: #666;
+}

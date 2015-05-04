@@ -1,0 +1,77 @@
+{% extends "base.jinja2" %}
+
+{% block body %}
+  {% include "navigation.jinja2" %}
+  <div id="content">
+  <h1>{{app_name}} Help</h1>
+
+  {% block before_default_help %}{% endblock %}
+  
+  <h2>What is {{app_name}}?</h2>
+
+  <p>{{app_name}} is an implementation of LIFTS, the <b>L</b>arge <b>I</b>nternet <b>F</b>ile <b>T</b>ransfer <b>S</b>ystem.
+    Its purpose is to make it easy for you to transfer large files to other users over the Internet.</p>
+
+  <p>LIFTS is an alternative to methods like e-mail attachments, FTP, or 3rd-party "cloud storage" services that can be difficult to use or create problems for system administrators.</p>
+
+  <h2>How do I use this program?</h2>
+
+  Using {{app_name}} is simple:
+
+  <ol>
+    <li><b>Login</b> with your {{auth_directory_name}} credentials.</li>
+    <li>Select a <b>file</b> to upload.</li>
+    <li>Enter the <b>email addresses</b> of recipients, one per box.</li>
+    <li>Enter any <b>additional comments</b> you want included in the email.</li>
+    <li>Click "Send file".</li>
+  </ol>
+
+  <p>Your file will be uploaded to a web sever, and a link to the file will be sent, along with your message, to all the recipients.  Recipients will have {{days_to_keep_file}} days to download the file, after which it will be automatically deleted from the server.</p>
+
+<h2>Do I need to include myself as a recipient?</h2>
+
+<p>No.  You will automatically be copied on the email that goes out.</p>
+
+  
+  <h2>How do I use password protection?</h2>
+
+  <p>You can optionally password-protect the download location of the file.  This will prompt the recipient for a username and password whenever they try to download the file.</p>
+<p>To use this feature, check the "Password protect the download location" box in the form before sending{% if custom_credentials %}, and enter a username and password.</p>
+<p><b>DO NOT</b> use your login credentials here!  This username and password will be sent to all recipients for downloading the file, you should make up something new here.</p>{% else %}.  A username and password will automatically be supplied and included in the email to recipients.</p>{% endif %}
+
+<h2>How do I send multiple files?</h2>
+
+<p>LIFTS only supports sending one file at a time.  If you need to send a group of files, it's recommended that you pack them into a single archive file, such as a .zip file.  This will make it easier for recipients to download, and save server space.</p>
+
+<h2>My name or email address is wrong.  How do I change it?</h2>
+
+<p>Your name and email address were pulled from your {{auth_directory_name}} account.  If these are incorrect, please <a href="#contact_technical_support">contact technical support</a>.</p>
+
+
+<h2>OH NO!  I just sent out a super-secret document to the wrong people!  What do I do?</h2>
+
+<a href="#contact_technical_support">Contact technical support</a> immediately.  They can delete the file and verify if it has been downloaded yet.
+
+<h2>Is LIFTS a secure way to transfer files?</h2>
+
+<p><b>No.</b></p>
+
+<p>LIFTS is designed for ease-of-use and convenience, not security.  It is not appropriate for transferring highly sensitive files.  If you are unsure if you should send a file using LIFTS, please consider the following:</p>
+
+<ul>
+  <li>Your files are going to be uploaded to a public web server for a period of {{days_to_keep_file}}.  Anyone with the download URL can download the file during this time.</li>
+  <li>Even with a username and password, anyone who has these credentials can login and get the file.</li>
+  <li>Credentials are sent in plain text in the recipient email.  Anyone intercepting or receiving these files can easily log in.</li>
+  <li>Anyone with access to the web server's operating system can view your files</li>
+</ul>
+
+<p>LIFTS's security is adequate to "keep the honest person honest", but will not secure your files against serious attackers.</p>
+
+
+<h2>How do I contact technical support?</h2>
+<a id="contact_technical_support"></a>
+{{techsupport_contact}}
+
+{% block after_default_help %}{% endblock %}
+</div>
+{% endblock %}

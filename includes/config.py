@@ -28,7 +28,8 @@ class Config:
     # This is a directory where htpasswords will be kept
     # It needs to be writeable by the user running LIFTS, but should not
     # be shared out by any web service
-    HTPASSWORD_PATH = 'passwords/'
+    # The default is NOT secure!!
+    HTPASSWORD_PATH = '/tmp/passwords/'
     DAYS_TO_KEEP_FILES = 30
 
     HTACCESS_TEMPLATE = """
@@ -36,7 +37,21 @@ AuthType  Basic
 AuthName  "Password Required"
 AuthUserFile  {password_file}
 Require valid-user
+
 """
+
+    #######################
+    # Password Protection #
+    #######################
+
+    # The username to specify as a default.
+    # if USER_SPECIFIED_CREDENTIALS is false, this will be the username.
+    DEFAULT_USERNAME = "lifts_user"
+
+    # Allow users to specify a username and password for password protection.
+    # If false, these will be auto-generated
+
+    USER_SPECIFIED_CREDENTIALS = False
     
     ######################
     # LDAP Configuration #
@@ -86,6 +101,23 @@ Please use the following credentials to access the file:
     """
         }
 
+    ###############
+    # UI SNIPPETS #
+    ###############
+
+    # Various templates and text snippets used in the UI
+
+    UI = {
+        # This string describes how users should contact your organization's tech support
+        # Do not instruct them to contact the author of this software
+        # unless you're prepared to pay an exhorbitant hourly rate :-).
+        "techsupport_contact": "Call technical support at 555-5555 or email techsupport@example.com.",
+        # What you call your organization's authentication directory system
+        "auth_directory_name": "example.com login credentials",
+        # If you want a custom help page, you can give its name here and put it in the templates folder.
+        "site_help": None
+    }
+    
     #########################
     # Logging configuration #
     #########################
