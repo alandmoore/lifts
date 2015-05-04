@@ -3,11 +3,14 @@
 {% block body %}
 <div id="navigation">&nbsp;</div>
 <div id="content">
-<h1>Please Login to {{app_name}}</h1>
+  <h1>Please Login to {{app_name}}</h1>
+  <div id="messages">
+  <p>Enter your {{auth_directory_name}} credentials:</p>
   {% if error %}
-    <p class='error'>{{error}}
+    <p class='error'>{{error}}</p>
   {% endif %}
-
+  </div>
+  
 <form name='login' id='login_form' method='POST'>
 <ul>
 <li><label>Username: </label><input type='text' name='username'

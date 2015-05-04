@@ -196,6 +196,7 @@ def login_page():
         "login.jinja2",
         error=error,
         username=username,
+        auth_directory_name=app.config["UI"].get("auth_directory_name"),
         **g.std_args
         )
 

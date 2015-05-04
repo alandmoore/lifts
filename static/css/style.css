@@ -166,3 +166,10 @@ BODY {
    padding: .5em;
    font-size: .8em;
 }
+
+#content #messages
+{
+   margin-left: auto;
+   margin-right: auto;
+   width: 20em;
+}
