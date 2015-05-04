@@ -16,7 +16,14 @@ TABLES = {
     ,comments    TEXT
     ,protected  BOOLEAN
     )
-    """
+    """,
+    "auth_log": """CREATE TABLE auth_log (
+    id INTEGER PRIMARY KEY
+    ,login_time  DATETIME DEFAULT CURRENT_TIMESTAMP
+    ,user_id TEXT
+    ,ip_address TEXT
+    ,user_agent TEXT
+    )"""
 }
 
 
@@ -60,4 +67,16 @@ class Log(object):
         self.cursor.execute(query, query_data)
         self.db.commit()
 
-
+    def log_login(self, uid, ip, user_agent):
+        query_data = {
+            "user_id": uid,
+            "ip_address": ip,
+            "user_agent": user_agent
+        }
+        query = """INSERT INTO auth_log
+        (user_id, ip_address, user_agent)
+        VALUES (:user_id, :ip_address, :user_agent)
+        """
+        self.cursor.execute(query, query_data)
+        self.db.commit()
+        
