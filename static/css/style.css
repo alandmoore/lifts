@@ -146,3 +146,23 @@ BODY {
    text-size: .8em;
    color: #666;
 }
+
+#content TABLE.history
+{
+   border: 1px solid black;
+   width: 100%;
+}
+
+#content TABLE.history TH
+{
+   background-color: #AAA;
+   text-align: left;
+   border: 1px solid black;
+}
+
+#content TABLE.history TD
+{
+   border: 1px solid black;
+   padding: .5em;
+   font-size: .8em;
+}

@@ -1,0 +1,28 @@
+{% extends "base.jinja2" %}
+
+{% block body %}
+  {% include "navigation.jinja2" %}
+  <div id="content">
+    <h1>History for {{user_realname}}</h1>
+
+    <h2>Last 10 Logins</h2>
+    <table class="history">
+      <thead><tr><th>Date</th><th>From IP</th><th>Using Browser</th></tr></thead>
+      <tbody>
+	{% for login in history["logins"][:10] %}
+	  <tr><td>{{login.login_time}}</td><td>{{login.ip_address}}</td><td>{{login.user_agent}}</td></tr>
+	{% endfor %}
+      </tbody>
+    </table>
+
+    <h2>Last 10 files sent</h2>
+    <table class="history">
+      <thead><tr><th>Date</th><th>Filename</th><th>Recipients</th><th>Protected?</th></tr></thead>
+      <tbody>
+	{% for sent in history["sent"][:10] %}
+	  <tr><td>{{sent.posted_on}}</td><td><a href="{{sent.url}}">{{sent.filename}}</a></td><td>{{sent.recipients}}</td><td>{{sent.protected and 'Yes' or 'No'}}</td></tr>
+	{% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

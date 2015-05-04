@@ -152,6 +152,7 @@ def file_upload():
         g.log.log_post(
             session["username"],
             filename,
+            file_url,
             recipients,
             email_text,
             password_protection
@@ -224,6 +225,20 @@ def help():
         **g.std_args
     )
 
+
+@app.route("/history")
+def history():
+    """Display a user's activity history"""
+
+    history = g.log.get_history(session["username"])
+
+    return render_template(
+        "history.jinja2",
+        history=history,
+        username=session["username"],
+        user_realname=session["user_realname"],
+        **g.std_args
+    )
 
 if __name__ == '__main__':
     app.run()
