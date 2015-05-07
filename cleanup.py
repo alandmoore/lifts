@@ -5,13 +5,20 @@ This script should be run by CRON daily to cleanup expired files.
 """
 import os
 import datetime
-from includes.config import Config
+from flask import Flask
 import syslog
 
+# We load flask so we can get the config values the same way flask does
+app = Flask(__name__, instance_relative_config=True)
+app.config.from_object('includes.config.Config')
+app.config.from_pyfile('config.py', silent=True)
 
 syslog.syslog("LIFTS cleanup starting")
 
-directories = {"files" : Config.upload_path, "passwords" :Config.htpassword_path}
+directories = {
+    "files": app.config.get("UPLOAD_FOLDER"),
+    "passwords": app.config.get("HTPASSWORD_PATH")
+}
 
 for key, directory in directories.items():
     if directory[0] != '/':
@@ -19,7 +26,7 @@ for key, directory in directories.items():
             os.path.realpath(os.path.dirname(__file__)),
             directory)
 
-max_age = Config.days_to_keep_files
+max_age = app.config.get("DAYS_TO_KEEP_FILES")
 
 today = datetime.date.today()
 
