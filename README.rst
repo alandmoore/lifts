@@ -22,7 +22,7 @@ Requirements
 ============
 
 - LIFTS is based on Flask, and requires flask.  It is probably best to run it using a python virtual environment.
-- LIFTS needs to authenticate with an LDAP service, such as Active Directory or eDirectory.
+- LIFTS needs to authenticate with an LDAP service, such as Active Directory or eDirectory.  It also requires the python-ldap library.
 - You probably want to run it using a real web server, such as apache with mod_wsgi.
 - You should almost certainly run it on a unixlike system such as Linux or BSD where there is a decent cron daemon and GNU find.
 - You also need to run it on a server where some sort of MTA is running and properly configured (a.k.a. "sendmail" functionality).
@@ -40,7 +40,7 @@ Example Setup
    cd /srv/www/lifts
    virtualenv env
    source env/bin/activate
-   pip install flask
+   pip install -r requirements.txt
    deactivate
 
 - Create the directories `/srv/www/htdocs/files` and `/srv/www/passwords` and give "lifts" full r/w permissions
@@ -49,28 +49,51 @@ Example Setup
     WSGIScriptAlias /lifts /srv/www/lifts/lifts.wsgi
     WSGIDaemonProcess lifts user=lifts group=users python-path=/srv/www/lifts
 
+    # For Apache 2.2
     <Directory /srv/www/lifts>
         Order deny,allow
         Allow from all
     </Directory>
 
-- Edit `/srv/www/lifts/includes/config.py`
+    # Or for Apache 2.4 +
+    <Directory /srv/www/lifts>
+        Require all granted
+    </Directory>
+  
+ 
+    
+- Create an instance-specific config at `/srv/www/lifts/instance/config.py`, for example::
 
-  - Set the "session_key" to some long, random string
-  - Set the upload_path to `/srv/www/htdocs/files`
-  - Set the uploads_url to "http://myserver/files", where "myserver" is something that resolves to this webserver.
-  - Set the htpassword_path to `/srv/www/passwords`
-  - Set the auth_backend to "AD"
-  - Configure the ldap settings for your AD.
+    APP_NAME = "My Company's LIFTS"
+    SECRET_KEY = "Some really long random string of characters"
+    AUTH = {
+      "auth_backend": "AD",
+      "ldap_config": {
+        "host": "my.domain.controller.mydomain.local",
+        "base_dn": "dc=mydomain, dc=local",
+        "bind_dn_username": "mybinduser@mydomain.local",
+        "bind_dn_password": "mybindusers_password",
+        "require_group": None,
+        "ssl": True
+      }
+    }
+    UPLOAD_FOLDER = "/srv/www/htdocs/files"
+    HTPASSWORD_PATH = "/srv/www/passwords"
+    UI = {
+      "techsupport_contact": "How to contact your IT dept",
+      "auth_directory_name": "Active Directory at MyDomain.local",
+      "site_help": None
+    }
 
-- Create a crontab job for either root or lifts to run `/srv/htdocs/lifts/cleanup.py` daily
+- Create a crontab job for either root or lifts to run `cd /srv/htdocs/lifts && env/bin/python cleanup.py` daily
 
 - Restart apache and check it out!
 
 Status
 ======
 
-LIFTS is currently very pre-alphaish.  Probably quite buggy.
+LIFTS is in beta at my organization.  It's obviously a bit tricky to get set up if you're not an experienced Linux admin.
+If you are using LIFTS in production, please take care when merging the latest changes, as things are still subject to change.
 
 Contributing
 ============
