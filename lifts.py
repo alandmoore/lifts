@@ -73,6 +73,8 @@ def index():
         user_email=session['user_email'],
         user_specified_credentials=app.config["USER_SPECIFIED_CREDENTIALS"],
         default_username=app.config["DEFAULT_USERNAME"],
+        auth_directory_name=app.config["UI"].get("auth_directory_name"),
+        techsupport_contact=app.config["UI"].get("techsupport_contact"),
         **g.std_args
     )
 

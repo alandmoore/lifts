@@ -5,6 +5,8 @@
 <div id="content">
 <h1>Welcome to {{app_name}}</h1>
 
+{% if user_email %}
+
 <h2>Sending as <strong>{{user_realname}}</strong> ({{user_email}})</h2>
 <form name='lifts_form' id='lifts_form' method='POST' action='{{url_for('file_upload')}}' enctype='multipart/form-data'>
 <ul>
@@ -55,6 +57,13 @@
   </li>
 </ul>
 </form>
+
+{% else %}
+  <H1>Oh No!</H1>
+<p>Your {{auth_directory_name}} account doesn't have an email address assigned!  You cannot use {{app_name}} without this.</p>
+<p>This isn't your fault, please contact technical support:</p>
+<p>{{techsupport_contact}}</p>
+{% endif %}
 
 <div id="messages"></div>
 </div>
