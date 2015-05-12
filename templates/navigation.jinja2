@@ -1,11 +1,11 @@
 <ul id=navigation>
-  {% for name, link, description in [
+  {% set navlinks = [
     ("Home", url_for("index"), "Upload and send files"),
     ("History", url_for("history"), "View your login and sending history"),
     ("Help", url_for("help"), "Get help using " + app_name),
     ("Logout", url_for("logout"), "Exit the program")
-    ]
-    %}
+  ] %}
+  {% for name, link, description in navlinks if logging or name != "History" %}
     <li><a href="{{link}}" title="{{description}}">{{name}}</a></li>
   {% endfor %}
 </ul>
