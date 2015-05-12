@@ -41,7 +41,7 @@ def send_email(**kwargs):
     msg = MIMEMultipart('alternative')
     msg['Subject'] = kwargs.get("subject")
     msg['To'] = recipient
-    msg['cc'] = cc_recipient
+    msg['CC'] = cc_recipient
     msg['From'] = sender
 
     message = MIMEText(kwargs.get("message"), 'plain')
