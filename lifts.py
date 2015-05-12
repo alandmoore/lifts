@@ -136,6 +136,7 @@ def file_upload():
 
     # Build and send the email
     email_data = {
+        "app_name": app.config.get("APP_NAME"),
         "user_realname": session['user_realname'],
         "expiration_date": (
             datetime.date.today() +
