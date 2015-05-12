@@ -172,6 +172,13 @@ BODY {
    font-size: .8em;
 }
 
+#content TABLE.history TR.deleted
+{
+   background-color: #DDD;
+   color: #666;
+   font-style: italic;
+}
+
 #content #messages
 {
    margin-left: auto;
