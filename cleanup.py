@@ -45,7 +45,7 @@ for key, directory in directories.items():
             ctime_ts = os.stat(os.path.join(path, filename)).st_ctime
             ctime = datetime.date.fromtimestamp(ctime_ts)
             if (today - ctime).days > max_age:
-                syslog("Removing {} from {}".format(filename, path))
+                syslog.syslog("Removing {} from {}".format(filename, path))
                 os.remove(os.path.join(path, filename))
                 if log:
                     log.log_file_deletion(
