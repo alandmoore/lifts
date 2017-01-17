@@ -14,11 +14,11 @@ class ldap_auth_backend(auth_backend):
 
     def __init__(
             self,
-            server='localhost',
+            host='localhost',
             port=389,
             base_dn="",
-            bind_dn="",
-            bind_pw="",
+            bind_dn_username="",
+            bind_dn_password="",
             require_group=None,
             ssl=False,
             **kwargs
@@ -26,21 +26,21 @@ class ldap_auth_backend(auth_backend):
         """Connect to authentication sources and configure basic settings
 
         Parameters:
-          - server: the server hosting the LDAP
+          - host: the server hosting the LDAP
           - port: port to connect to. Must be an integer.
           - base_dn: the top-level DN under which to search for users
-          - bind_dn: a DN to bind to the server and search for users/groups
-          - bind_pw: the password for the bind DN
+          - bind_dn_username: a DN to bind to the server for searching
+          - bind_dn_password: the password for the bind DN
           - require_group:  A group membership to require for login,
                             or None if any legit account can login.
           - ssl: Whether or not to use ssl.
         """
 
         self.error = ""
-        self.servername = server
+        self.servername = host
         self.base_dn = base_dn
-        self.bind_dn = bind_dn
-        self.bind_pw = bind_pw
+        self.bind_dn = bind_dn_username
+        self.bind_pw = bind_dn_password
         self.require_group = require_group
         self.authenticated_user = None
         self.authenticated_dn = None
