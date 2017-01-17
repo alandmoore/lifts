@@ -1,2 +1,2 @@
 flask
-python-ldap
+ldap3
