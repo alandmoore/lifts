@@ -133,7 +133,7 @@ class ldap_auth_backend(auth_backend):
         """
         if self.authenticated_user:
             return (
-                self.info_on(self.authenticated_user).get("name")
+                self._info_on(self.authenticated_user).get("name")
                 or self.authenticated_user
             )
         return None
@@ -145,7 +145,7 @@ class ldap_auth_backend(auth_backend):
         If there's no email available, it returns an empty string
         """
         if self.authenticated_user:
-            email = self.info_on(self.authenticated_user).get("mail", [''])
+            email = self._info_on(self.authenticated_user).get("mail", [''])
             return email
         return None
 
