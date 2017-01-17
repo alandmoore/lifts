@@ -31,17 +31,24 @@ def send_email(**kwargs):
         "data" : data for attachment
         "filename" : filename for attachment
     """
-    recipient = kwargs.get("to")
-    cc_recipient = kwargs.get("cc")
+    recipient = kwargs.get("to", '')
+    cc_recipient = kwargs.get("cc", '')
     if type(recipient) in (list, tuple):
-        recipient = ', '.join(recipient)
+        header_recipient = ', '.join(recipient)
+    else:
+        header_recipient = recipient
+        recipient = [x.strip() for x in recipient.split(",")]
     if type(cc_recipient) in (list, tuple):
-        cc_recipient = ', '.join(cc_recipient)
+        header_cc_recipient = ', '.join(cc_recipient)
+    else:
+        header_cc_recipient = cc_recipient
+        cc_recipient = [x.strip() for x in cc_recipient.split(",")]
+        
     sender = kwargs.get("sender", "noreply@"+platform.node())
     msg = MIMEMultipart('alternative')
     msg['Subject'] = kwargs.get("subject")
-    msg['To'] = recipient
-    msg['cc'] = cc_recipient
+    msg['To'] = header_recipient
+    msg['CC'] = header_cc_recipient
     msg['From'] = sender
 
     message = MIMEText(kwargs.get("message"), 'plain')
@@ -60,5 +67,9 @@ def send_email(**kwargs):
             msg.attach(part)
 
     smtp = smtplib.SMTP('localhost')
-    smtp.sendmail(sender, recipient, msg.as_string())
+    smtp.sendmail(
+        sender,
+        recipient + cc_recipient,
+        msg.as_string()
+    )
     smtp.close()

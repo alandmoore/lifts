@@ -82,8 +82,8 @@ BODY {
 }
 
 #content FORM LI {
-    overflow: auto;
-    margin-bottom: 1em;
+   overflow: hidden;
+   margin-bottom: 1em;
 }
 
 #content FORM LABEL {
@@ -115,6 +115,7 @@ BODY {
 
 #lifts_form INPUT[type=text]{
    width: 80%;
+   min-width: 24em;
 }
 
 #lifts_form {
@@ -122,20 +123,24 @@ BODY {
 }
 
 #content PRE.email_preview{
-    border: 1px solid black;
-    padding: 2em;
-    margin-left: auto;
-    margin-right: auto;
-    border-radius: 2em;
+   border: 1px solid black;
+   padding: 2em;
+   margin-left: auto;
+   margin-right: auto;
+   border-radius: 2em;
+   white-space: pre-wrap;
 }
 
-#content FORM #recpients_list {
+#content FORM #recipients_list {
    float: left;
+   width: 24em;
+   padding: 0px;
+   
 }
 
 #content FORM #recipients_list LI {
-   float: left;
-   min-width: 12em;
+   float: right;
+   min-width: 24em;
 }
 
 
@@ -165,6 +170,13 @@ BODY {
    border: 1px solid black;
    padding: .5em;
    font-size: .8em;
+}
+
+#content TABLE.history TR.deleted
+{
+   background-color: #DDD;
+   color: #666;
+   font-style: italic;
 }
 
 #content #messages

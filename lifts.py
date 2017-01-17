@@ -7,7 +7,7 @@ Please see README.rst for documentation.
 """
 
 from flask import Flask, g, render_template, \
-    request, url_for, redirect, session
+    request, url_for, redirect, session, abort
 from werkzeug import secure_filename
 from includes.authenticator import Authenticator, dummy_auth
 from includes.ad_auth import AD
@@ -48,7 +48,8 @@ def before_request():
 
     g.std_args = {
         "app_name": app.config["APP_NAME"],
-        "site_css": app.config["SITE_CSS"]
+        "site_css": app.config["SITE_CSS"],
+        "logging": app.config["LOGGING"]["log"]
     }
     
     # Make the config globally available
@@ -136,6 +137,7 @@ def file_upload():
 
     # Build and send the email
     email_data = {
+        "app_name": app.config.get("APP_NAME"),
         "user_realname": session['user_realname'],
         "expiration_date": (
             datetime.date.today() +
@@ -160,6 +162,7 @@ def file_upload():
         g.log.log_post(
             session["username"],
             filename,
+            os.path.join(app.config['UPLOAD_FOLDER'], directory, filename),
             file_url,
             recipients,
             email_text,
@@ -238,6 +241,9 @@ def help():
 @app.route("/history")
 def history():
     """Display a user's activity history"""
+
+    if not app.config["LOGGING"]["log"]:
+        abort(404)
 
     history = g.log.get_history(session["username"])
 

@@ -15,4 +15,10 @@ else:
     print("{} not found, using system python.".format(virtualenv_path))
 sys.path.insert(0, path)
 
-from lifts import app as application
+from lifts import app
+
+if app.config.get("DEBUG"):
+    from werkzeug.debug import DebuggedApplication
+    application = DebuggedApplication(app, True)
+else:
+    application = app

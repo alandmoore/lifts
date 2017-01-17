@@ -12,10 +12,12 @@ TABLES = {
     ,posted_on  DATETIME DEFAULT CURRENT_TIMESTAMP
     ,posted_by  TEXT
     ,filename   TEXT
+    ,path       TEXT
     ,url        TEXT
     ,recipients TEXT
     ,comments    TEXT
     ,protected  BOOLEAN
+    ,on_server  BOOLEAN DEFAULT 1
     )
     """,
     "auth_log": """CREATE TABLE auth_log (
@@ -63,18 +65,22 @@ class Log(object):
             if not exists:
                 self.cursor.execute(TABLES[table])
 
-    def log_post(self, posted_by, filename, url, recipients, comments, protected):
+    def log_post(
+            self, posted_by, filename, path,
+            url, recipients, comments, protected
+    ):
         query_data = {
             "posted_by": posted_by,
             "filename": filename,
+            "path": path,
             "url": url,
             "recipients": ', '.join(x.strip() for x in recipients),
             "comments": comments,
             "protected": protected
         }
         query = """INSERT INTO post_log
-        (posted_by, filename, url, recipients, comments, protected)
-        VALUES (:posted_by, :filename, :url, :recipients,
+        (posted_by, filename, path, url, recipients, comments, protected)
+        VALUES (:posted_by, :filename, :path, :url, :recipients,
         :comments, :protected)
         """
         self.cursor.execute(query, query_data)
@@ -106,3 +112,11 @@ class Log(object):
         data["sent"] = self.cursor.fetchall()
 
         return data
+
+    def log_file_deletion(self, path):
+        """Called when a file is deleted, to record that it's gone"""
+
+        query = """UPDATE post_log SET on_server=0 WHERE path=:path"""
+        self.cursor.execute(query, {"path": path})
+        self.db.commit()
+        

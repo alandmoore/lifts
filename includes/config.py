@@ -74,19 +74,19 @@ Require valid-user
     #######################
     EMAIL = {
         "email_template":  """
-    {user_realname} has just sent you a file using LIFTS.
+{user_realname} sent you a file using {app_name}.
 
-    The file will be available for download until {expiration_date}
- at the following URL:
+The file will be available for download until {expiration_date} at the following URL:
 
     {file_url}
 
-    {password_protection_text}
+{password_protection_text}
 
-    {optional_text}
+{optional_text}
         """,
         "pw_prot_template": """
-    The download is password protected.  
+The download is password protected.
+
 Please use the following credentials to access the file:
 
     username:  {pw_protect_username}
@@ -94,11 +94,11 @@ Please use the following credentials to access the file:
     """,
 
         "opt_text_template": """
-    {user_realname} has added the following note:
+{user_realname} has added the following note:
 
     {additional_comments}
 
-    """
+"""
         }
 
     ###############
