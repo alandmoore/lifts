@@ -21,11 +21,12 @@ LIFTS copies the file to a unique folder in a location you specify on your web s
 Requirements
 ============
 
-- LIFTS is based on Flask, and requires flask.  It is probably best to run it using a python virtual environment.
-- LIFTS needs to authenticate with an LDAP service, such as Active Directory or eDirectory.  It also requires the python-ldap library.
+- Python 2.7+ or Python 3.4+
+- LIFTS is based on Flask, and requires ``flask``.  It is probably best to run it using a python virtual environment.
+- LIFTS needs to authenticate with an LDAP service, such as Active Directory or eDirectory.  It also requires the ``ldap3`` library.
 - You probably want to run it using a real web server, such as apache with mod_wsgi.
 - You should almost certainly run it on a unixlike system such as Linux or BSD where there is a decent cron daemon and GNU find.
-- You also need to run it on a server where some sort of MTA is running and properly configured (a.k.a. "sendmail" functionality).
+- You also need to run it on a server where some sort of MTA is running and properly configured (a.k.a. ``sendmail`` functionality).
 - Finally, you need a directory on that server being shared publicly by apache, where the uploaded files will go.
 
 Example Setup
@@ -59,9 +60,9 @@ Example Setup
     <Directory /srv/www/lifts>
         Require all granted
     </Directory>
-  
- 
-    
+
+
+
 - Create an instance-specific config at `/srv/www/lifts/instance/config.py`, for example::
 
     APP_NAME = "My Company's LIFTS"
@@ -99,6 +100,9 @@ Contributing
 ============
 
 Yes, please do!
+
+See TODO.rst for ideas on what you might add.
+
 
 License
 =======
