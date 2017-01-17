@@ -15,7 +15,7 @@ class ldap_auth_backend(auth_backend):
     def __init__(
             self,
             server='localhost',
-            port="389",
+            port=389,
             base_dn="",
             bind_dn="",
             bind_pw="",
@@ -27,7 +27,7 @@ class ldap_auth_backend(auth_backend):
 
         Parameters:
           - server: the server hosting the LDAP
-          - port: port to connect to.
+          - port: port to connect to. Must be an integer.
           - base_dn: the top-level DN under which to search for users
           - bind_dn: a DN to bind to the server and search for users/groups
           - bind_pw: the password for the bind DN
